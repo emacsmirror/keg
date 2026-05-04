@@ -4,3 +4,5 @@
 *.elc
 /.cask
 /.keg
+/result
+/result-*
