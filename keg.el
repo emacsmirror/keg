@@ -293,7 +293,7 @@ See `package-install'."
         (running t))
     (when linter
       (let* ((fn (intern (format "keg-lint--%s-batch" linter)))
-             (command `("emacs" "--batch"
+             (command `(,(keg-emacs-executable) "--batch" "--no-site-file"
                         "-l"
                         ,(expand-file-name "keg-lint.el" keg-directory)
                         ,(format "--funcall=%s" fn)
@@ -458,6 +458,19 @@ Add environmental variable which inhibit installation if NO-INSTALL is non-nil."
                 (format "KEGLINTPACKAGEARCHIVES=%S" (keg-build--package-archives)))
           (when no-install (list (format "KEGNOINSTALL=%S" t)))
           process-environment))
+
+(defun keg-emacs-executable ()
+  "Return the absolute path of the Emacs executable running Keg.
+Spawning child processes through this path, rather than resolving
+\"emacs\" via variable `exec-path', keeps Keg's tooling on the same
+Emacs that is running Keg.  Fall back to \"emacs\" when the path
+cannot be determined."
+  (or (and invocation-directory
+           invocation-name
+           (let ((path (expand-file-name invocation-name invocation-directory)))
+             (and (file-executable-p path) path)))
+      (executable-find "emacs")
+      "emacs"))
 
 (defun keg-start-process (&rest command)
   "Exec COMMAND and return process object."

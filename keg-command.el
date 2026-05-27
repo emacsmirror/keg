@@ -153,6 +153,8 @@ ARGS is list of string.
 
 USAGE: keg exec COMMAND [ARGS...]"
   (keg--argument-count-check 1 -1 'exec args)
+  (when (member (car args) '("emacs" "Emacs"))
+    (setq args (cons (keg-emacs-executable) (cdr args))))
   (keg-around-script exec
     (let ((proc (apply #'keg-start-process args)))
       (set-process-sentinel
@@ -179,7 +181,7 @@ USAGE: keg eval [SEXP]"
   (keg--argument-count-check -1 -1 'eval args) ; sexp is separated
   (when args
     (keg-around-script eval
-      (keg-command-exec "emacs" "--batch"
+      (keg-command-exec "emacs" "--batch" "--no-site-file"
                         (format "--eval=\"%s\"" (keg--string-join args " "))))))
 
 (defun keg-command-lint (&rest args)
