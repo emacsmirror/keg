@@ -182,7 +182,7 @@ USAGE: keg eval [SEXP]"
   (when args
     (keg-around-script eval
       (keg-command-exec "emacs" "--batch" "--no-site-file"
-                        (format "--eval=\"%s\"" (keg--string-join args " "))))))
+                        (format "--eval=%s" (keg--string-join args " "))))))
 
 (defun keg-command-lint (&rest args)
   "Exec linters for PACKAGE.
