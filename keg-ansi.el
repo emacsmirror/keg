@@ -213,7 +213,7 @@ FORMAT-STRING and OBJECTS are processed same as `apply'."
          (code (if (numberp effect-or-code)
                    effect-or-code
                  (keg-ansi--alist-get effect-or-code keg-ansi-codes)))
-         (text (apply 'format str objects)))
+         (text (apply #'format str objects)))
     (format "\e[%dm%s\e[0m" code text)))
 
 (defun keg-ansi-csi (effect-or-char &rest args)
@@ -231,7 +231,7 @@ FORMAT-STRING and OBJECTS are processed same as `apply'."
   (let* ((str (if (stringp format-string)
                   format-string
                 (prin1-to-string format-string)))
-         (text (apply 'format str objects)))
+         (text (apply #'format str objects)))
     (format "\e[38;5;%sm%s\e[0m" code text)))
 
 (defun keg-ansi-256-bg (code format-string &rest objects)
@@ -241,7 +241,7 @@ FORMAT-STRING and OBJECTS are processed same as `apply'."
   (let* ((str (if (stringp format-string)
                   format-string
                 (prin1-to-string format-string)))
-         (text (apply 'format str objects)))
+         (text (apply #'format str objects)))
     (format "\e[48;5;%sm%s\e[0m" code text)))
 
 (defun keg-ansi-rgb (r g b format-string &rest objects)
@@ -252,7 +252,7 @@ FORMAT-STRING and OBJECTS are processed same as `apply'."
                   format-string
                 (prin1-to-string format-string)))
          (code (mapconcat #'prin1-to-string (list r g b) ";"))
-         (text (apply 'format str objects)))
+         (text (apply #'format str objects)))
     (format "\e[38;2;%sm%s\e[0m" code text)))
 
 (defun keg-ansi-rgb-bg (r g b format-string &rest objects)
@@ -263,7 +263,7 @@ FORMAT-STRING and OBJECTS are processed same as `apply'."
                   format-string
                 (prin1-to-string format-string)))
          (code (mapconcat #'prin1-to-string (list r g b) ";"))
-         (text (apply 'format str objects)))
+         (text (apply #'format str objects)))
     (format "\e[48;2;%sm%s\e[0m" code text)))
 
 (defmacro with-keg-ansi (&rest body)

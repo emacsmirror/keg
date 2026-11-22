@@ -407,7 +407,7 @@ This function is `alist-get' polifill for Emacs < 25.1."
 (defun keg--string-join (strings &optional separator)
   "Join all STRINGS using SEPARATOR.
 This function is `string-join' polifill for Emacs < 24.4."
-  (mapconcat 'identity strings separator))
+  (mapconcat #'identity strings separator))
 
 (defun keg--no-install-p (op no-install-commands)
   "Return t if keg should not run install command.
