@@ -216,8 +216,9 @@ USAGE: keg clean-elc [PACKAGE]"
     (let ((pkg (keg--argument-package-check (car args) 'allow)))
       (dolist (file (keg-elisp-files pkg))
         (let ((elc (concat file "c")))
-          (keg--princ (format "Removing %s..." elc))
-          (delete-file elc))))))
+          (when (or (file-exists-p elc) (file-symlink-p elc))
+            (keg--princ (format "Removing %s..." elc))
+            (delete-file elc)))))))
 
 (defun keg-command-clean (&rest args)
   "Clean `.elc' files and `.keg' sandbox.
